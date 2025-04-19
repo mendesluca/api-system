@@ -4,6 +4,7 @@ import com.eduardo.apisystem.model.dto.UsuarioDTO;
 import com.eduardo.apisystem.model.dto.UsuarioResponseDTO;
 import com.eduardo.apisystem.service.AuthService;
 import com.eduardo.apisystem.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
+    @Operation(summary = "Cria um usuário")
     public ResponseEntity<Void> criarUsuario(@RequestBody @Valid UsuarioDTO usuarioDTO, UriComponentsBuilder uriBuilder) {
         UsuarioDTO usuario = usuarioService.salvar(usuarioDTO);
 
@@ -34,27 +36,32 @@ public class UsuarioController {
     }
 
     @GetMapping
+    @Operation(summary = "Busca todos os usuários")
     public ResponseEntity<List<UsuarioDTO>> buscarUsuario() {
         return ResponseEntity.ok().body(usuarioService.buscarTodos());
     }
 
     @GetMapping("/{usuarioId}")
+    @Operation(summary = "Busca um usuário pelo ID")
     public ResponseEntity<UsuarioResponseDTO> buscarPorId(@PathVariable @NotNull Long usuarioId) {
         return ResponseEntity.ok().body(usuarioService.buscarUsuarioPorId(usuarioId));
     }
 
     @DeleteMapping("/{usuarioId}")
+    @Operation(summary = "Deleta um usuário pelo ID")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable @NotNull Long usuarioId) {
         usuarioService.deletar(usuarioId);
     }
 
     @PutMapping
+    @Operation(summary = "Atualiza um usuário")
     public ResponseEntity<UsuarioResponseDTO> atualizar(@RequestBody @Valid UsuarioDTO usuarioDTO) {
         return ResponseEntity.ok().body(usuarioService.atualizar(usuarioDTO));
     }
 
     @GetMapping("token/{token}")
+    @Operation(summary = "Busca um usuário pelo token")
     public ResponseEntity<UsuarioResponseDTO> loadUserByToken(@PathVariable String token) {
         return ResponseEntity.ok(authService.findUsuarioByToken(token));
     }

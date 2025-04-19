@@ -4,6 +4,7 @@ import com.eduardo.apisystem.model.dto.TokenDTO;
 import com.eduardo.apisystem.model.dto.UsuarioDTO;
 import com.eduardo.apisystem.model.request.LoginRequest;
 import com.eduardo.apisystem.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ public class AuthController {
   private final AuthService authService;
 
   @PostMapping()
+  @Operation(summary = "Realiza o login")
   public ResponseEntity<TokenDTO> login(@RequestBody @Valid LoginRequest loginRequest) {
     TokenDTO tokenDTO = new TokenDTO(authService.authLogin(loginRequest));
 
@@ -24,6 +26,7 @@ public class AuthController {
   }
 
   @GetMapping("refresh-token/{token}")
+  @Operation(summary = "Atualiza o token")
   public ResponseEntity<TokenDTO> refreshToken(@PathVariable String token) {
     TokenDTO tokenDTO = new TokenDTO(authService.refreshToken(token));
 
