@@ -1,7 +1,6 @@
 package com.eduardo.apisystem.controller;
 
-import com.eduardo.apisystem.model.dto.TokenDTO;
-import com.eduardo.apisystem.model.dto.UsuarioDTO;
+import com.eduardo.apisystem.model.dto.jwt.TokenDTO;
 import com.eduardo.apisystem.model.request.LoginRequest;
 import com.eduardo.apisystem.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;

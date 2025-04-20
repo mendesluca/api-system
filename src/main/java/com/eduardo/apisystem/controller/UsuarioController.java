@@ -1,7 +1,8 @@
 package com.eduardo.apisystem.controller;
 
-import com.eduardo.apisystem.model.dto.UsuarioDTO;
-import com.eduardo.apisystem.model.dto.UsuarioResponseDTO;
+import com.eduardo.apisystem.model.dto.usuario.SenhaDTO;
+import com.eduardo.apisystem.model.dto.usuario.UsuarioDTO;
+import com.eduardo.apisystem.model.dto.usuario.UsuarioResponseDTO;
 import com.eduardo.apisystem.service.AuthService;
 import com.eduardo.apisystem.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -58,6 +59,16 @@ public class UsuarioController {
     @Operation(summary = "Atualiza um usuário")
     public ResponseEntity<UsuarioResponseDTO> atualizar(@RequestBody @Valid UsuarioDTO usuarioDTO) {
         return ResponseEntity.ok().body(usuarioService.atualizar(usuarioDTO));
+    }
+
+    @PutMapping("senha")
+    @Operation(summary = "Atualiza a senha de um usuário")
+    public ResponseEntity<Void> handleAtualizarSenha(
+            @RequestHeader("Authorization") String token,
+            @RequestBody SenhaDTO senhaDTO
+            ) {
+        usuarioService.atualizarSenha(senhaDTO, token);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("token/{token}")

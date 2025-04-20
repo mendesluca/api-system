@@ -1,4 +1,4 @@
-package com.eduardo.apisystem.model.dto;
+package com.eduardo.apisystem.model.dto.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

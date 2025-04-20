@@ -1,10 +1,9 @@
 package com.eduardo.apisystem.mapper;
 
 import com.eduardo.apisystem.entity.Usuario;
-import com.eduardo.apisystem.model.dto.UsuarioDTO;
-import com.eduardo.apisystem.model.dto.UsuarioResponseDTO;
+import com.eduardo.apisystem.model.dto.usuario.UsuarioDTO;
+import com.eduardo.apisystem.model.dto.usuario.UsuarioResponseDTO;
 import org.mapstruct.Mapper;
-import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
 

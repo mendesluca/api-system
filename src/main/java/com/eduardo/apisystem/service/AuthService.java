@@ -2,7 +2,7 @@ package com.eduardo.apisystem.service;
 
 import com.eduardo.apisystem.entity.Usuario;
 import com.eduardo.apisystem.mapper.UsuarioMapper;
-import com.eduardo.apisystem.model.dto.UsuarioResponseDTO;
+import com.eduardo.apisystem.model.dto.usuario.UsuarioResponseDTO;
 import com.eduardo.apisystem.model.request.LoginRequest;
 import com.eduardo.apisystem.repository.UsuarioRepository;
 import jakarta.validation.Valid;
@@ -27,6 +27,13 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         return usuarioRepository.findByLogin(login);
+    }
+
+    public Usuario findUsuarioEntityByToken(String token) {
+        token= token.replace("Bearer ", "");
+        String subject = tokenService.getSubject(token);
+
+        return usuarioRepository.findByLogin(subject);
     }
 
     public UsuarioResponseDTO findUsuarioByToken(String token) {

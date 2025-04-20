@@ -1,7 +1,6 @@
 package com.eduardo.apisystem.config.security;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,39 +17,39 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-  private final SecurityFilter securityFilter;
+    private final SecurityFilter securityFilter;
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    return http
-        .csrf(AbstractHttpConfigurer::disable)
-        .sessionManagement((session) -> {
-          session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        })
-        .authorizeHttpRequests((requests) -> {
-          requests.requestMatchers(
-              "/api/system/auth/**",
-              "/swagger-ui/**",
-              "/v3/api-docs/**",
-              "/swagger-resources/**",
-              "/swagger-ui.html"
-          ).permitAll();
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement((session) -> {
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                })
+                .authorizeHttpRequests((requests) -> {
+                    requests.requestMatchers(
+                            "/api/system/auth/**",
+                            "/swagger-ui/**",
+                            "/v3/api-docs/**",
+                            "/swagger-resources/**",
+                            "/swagger-ui.html"
+                    ).permitAll();
 
-          requests.requestMatchers(HttpMethod.POST, "/api/system/usuario").permitAll();
+                    requests.requestMatchers(HttpMethod.POST, "/api/system/usuario").permitAll();
 
-          requests.anyRequest().authenticated();
-        })
-        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-        .build();
-  }
+                    requests.anyRequest().authenticated();
+                })
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
 
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-    return authenticationConfiguration.getAuthenticationManager();
-  }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

@@ -1,4 +1,4 @@
-package com.eduardo.apisystem.model.dto;
+package com.eduardo.apisystem.model.dto.usuario;
 
 import lombok.*;
 
@@ -7,9 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UsuarioResponseDTO {
+public class UsuarioDTO {
   private Long usuarioId;
   private String email;
   private String login;
+  private String senha;
   private String nomeCompleto;
 }
