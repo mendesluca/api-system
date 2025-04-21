@@ -1,4 +1,4 @@
-package exception.customizadas;
+package exception.customizadas.jwt;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

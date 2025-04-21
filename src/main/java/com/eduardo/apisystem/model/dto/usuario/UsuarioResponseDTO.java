@@ -1,6 +1,10 @@
 package com.eduardo.apisystem.model.dto.usuario;
 
+import com.eduardo.apisystem.entity.Perfil;
 import lombok.*;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -12,4 +16,5 @@ public class UsuarioResponseDTO {
   private String email;
   private String login;
   private String nomeCompleto;
+  private Set<Perfil> perfilList = new LinkedHashSet<>();
 }

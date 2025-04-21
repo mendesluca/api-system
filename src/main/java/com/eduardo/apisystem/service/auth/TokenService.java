@@ -1,4 +1,4 @@
-package com.eduardo.apisystem.service;
+package com.eduardo.apisystem.service.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -6,7 +6,9 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.eduardo.apisystem.entity.Usuario;
-import exception.customizadas.TokenJWTException;
+import exception.customizadas.jwt.TokenJWTException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class TokenService {
   @Value("${jwt.secret}")
   private String secret;
@@ -24,32 +28,46 @@ public class TokenService {
   @Value("${jwt.expiration}")
   private String expiration;
 
+  public String gerarRefreshToken(Usuario usuario) {
+    try {
+      Algorithm algorithm = Algorithm.HMAC256(secret);
+
+      return JWT.create()
+              .withIssuer("Api System")
+              .withSubject(usuario.getUsuarioId().toString())
+              .withExpiresAt(dataExpiracao("1800"))
+              .sign(algorithm);
+
+    } catch (JWTCreationException e) {
+      throw new TokenJWTException("Erro ao criar token: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 
   public String gerarToken(Usuario usuario) {
     try {
       Algorithm algorithm = Algorithm.HMAC256(secret);
 
       return JWT.create()
-          .withIssuer("System")
+          .withIssuer("Api System")
           .withSubject(usuario.getLogin())
-          .withExpiresAt(dataExpiracao())
+          .withExpiresAt(dataExpiracao(expiration))
           .sign(algorithm);
 
     } catch (JWTCreationException e) {
-      throw new JWTCreationException("Erro ao criar token", e);
+      throw new TokenJWTException("Erro ao criar token: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
   public String getSubject(String tokenJWT) {
     try {
       return JWT.require(Algorithm.HMAC256(secret))
-          .withIssuer("System")
+          .withIssuer("Api System")
           .build()
           .verify(tokenJWT)
           .getSubject();
 
     } catch (JWTVerificationException e) {
-      throw new TokenJWTException("Erro ao verificar token", HttpStatus.UNAUTHORIZED);
+      throw new TokenJWTException("Erro ao verificar token: " + e.getMessage(), HttpStatus.UNAUTHORIZED);
     }
   }
 
@@ -61,8 +79,8 @@ public class TokenService {
     return dataExpiracao.before(new Date());
   }
 
-  private Instant dataExpiracao() {
-    long segundos = Long.parseLong(expiration) * 1000;
+  private Instant dataExpiracao(String time) {
+    long segundos = Long.parseLong(time);
     return LocalDateTime.now().plusSeconds(segundos).toInstant(ZoneOffset.of("-03:00"));
   }
 }

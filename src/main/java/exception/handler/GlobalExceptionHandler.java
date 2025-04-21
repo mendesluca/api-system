@@ -1,7 +1,8 @@
 package exception.handler;
 
-import exception.customizadas.SenhaException;
-import exception.customizadas.TokenJWTException;
+import exception.customizadas.usuario.SenhaException;
+import exception.customizadas.jwt.TokenJWTException;
+import exception.customizadas.usuario.UsuarioException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+  @ExceptionHandler(UsuarioException.class)
+  public ResponseEntity<ApiError> handlerUsuarioException(UsuarioException ex, HttpServletRequest request) {
+    ApiError apiError = new ApiError(ex.getStatus(), ex.getMessage(), request.getRequestURI());
+
+    return new ResponseEntity<>(apiError, ex.getStatus());
+  }
+
   @ExceptionHandler(SenhaException.class)
   public ResponseEntity<ApiError> handlerSenhaException(SenhaException ex, HttpServletRequest request) {
     ApiError apiError = new ApiError(ex.getStatus(), ex.getMessage(), request.getRequestURI());

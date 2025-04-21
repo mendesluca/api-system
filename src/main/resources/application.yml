@@ -1,4 +1,20 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: eduardoschiliga1@gmail.com
+    password: suexnsjtiwipbwil
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          ssl:
+            trust: smtp.gmail.com
   web:
     resources:
       add-mappings: true
@@ -13,13 +29,16 @@ spring:
     hibernate:
       ddl-auto: update
     properties: { }
+
 swagger:
   username: ${SWAGGER_USERNAME:root}
   password: ${SWAGGER_PASSWORD:root}
 
+
+
 jwt:
   secret: ${JWT_SECRET:asdas5d1as51hgsdfjhdaja398498415asd1asfhs5dfssdf}
-  expiration: ${JWT_EXPIRATION:86400000}
+  expiration: ${JWT_EXPIRATION:900}
 
 springdoc:
   group-configs:
@@ -34,10 +53,10 @@ springdoc:
 server:
   port: 8150
 
-#eureka:
-#  client:
-#    service-url:
-#      defaultZone: http://localhost:8761/eureka/
-#    register-with-eureka: true
-#    fetch-registry: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
 

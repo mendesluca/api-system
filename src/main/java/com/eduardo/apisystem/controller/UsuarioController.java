@@ -1,14 +1,16 @@
 package com.eduardo.apisystem.controller;
 
+import com.eduardo.apisystem.model.dto.perfil.PerfilDTO;
 import com.eduardo.apisystem.model.dto.usuario.SenhaDTO;
 import com.eduardo.apisystem.model.dto.usuario.UsuarioDTO;
 import com.eduardo.apisystem.model.dto.usuario.UsuarioResponseDTO;
-import com.eduardo.apisystem.service.AuthService;
-import com.eduardo.apisystem.service.UsuarioService;
+import com.eduardo.apisystem.service.auth.AuthService;
+import com.eduardo.apisystem.service.usuario.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -75,5 +77,16 @@ public class UsuarioController {
     @Operation(summary = "Busca um usuário pelo token")
     public ResponseEntity<UsuarioResponseDTO> loadUserByToken(@PathVariable String token) {
         return ResponseEntity.ok(authService.findUsuarioByToken(token));
+    }
+
+    @GetMapping("verificar-conta")
+    @Operation(summary = "Verifica o email")
+    public ResponseEntity<String> handleVerificarEmail(@RequestParam String codigo) {
+        return ResponseEntity.ok(usuarioService.verificarEmail(codigo));
+    }
+
+    @PatchMapping("{usuarioId}/perfil")
+    public ResponseEntity<UsuarioResponseDTO> handleAdicionarPerfil(@PathVariable Long usuarioId, @RequestBody PerfilDTO perfilDTO) {
+        return ResponseEntity.ok().body(usuarioService.adicionarPerfil(usuarioId, perfilDTO));
     }
 }

@@ -1,13 +1,16 @@
-package com.eduardo.apisystem.service;
+package com.eduardo.apisystem.service.auth;
 
 import com.eduardo.apisystem.entity.Usuario;
 import com.eduardo.apisystem.mapper.UsuarioMapper;
+import com.eduardo.apisystem.model.dto.jwt.RefreshTokenDTO;
+import com.eduardo.apisystem.model.dto.jwt.TokenDTO;
 import com.eduardo.apisystem.model.dto.usuario.UsuarioResponseDTO;
 import com.eduardo.apisystem.model.request.LoginRequest;
-import com.eduardo.apisystem.repository.UsuarioRepository;
-import jakarta.validation.Valid;
+import com.eduardo.apisystem.repository.usuario.UsuarioRepository;
+import exception.customizadas.usuario.UsuarioException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,43 +28,58 @@ public class AuthService implements UserDetailsService {
     private final ApplicationContext applicationContext;
 
     @Override
-    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        return usuarioRepository.findByLogin(login);
+    public UserDetails loadUserByUsername(String login) {
+        try {
+            return usuarioRepository.findByLoginAndVerificadoTrue(login);
+        } catch (UsernameNotFoundException e) {
+            throw new UsernameNotFoundException(e.getMessage());
+        }
     }
 
     public Usuario findUsuarioEntityByToken(String token) {
-        token= token.replace("Bearer ", "");
+        token = token.replace("Bearer ", "");
         String subject = tokenService.getSubject(token);
 
-        return usuarioRepository.findByLogin(subject);
+        return usuarioRepository.findByLoginAndVerificadoTrue(subject);
     }
 
     public UsuarioResponseDTO findUsuarioByToken(String token) {
-        token= token.replace("Bearer ", "");
+        token = token.replace("Bearer ", "");
         String subject = tokenService.getSubject(token);
-        Usuario usuario = usuarioRepository.findByLogin(subject);
+        Usuario usuario = usuarioRepository.findByLoginAndVerificadoTrue(subject);
 
         return usuarioMapper.usuarioToUsuarioResponseDTO(usuario);
     }
 
-    public String refreshToken(String token) {
-        String subject = tokenService.getSubject(token);
-        Usuario usuario = usuarioRepository.findByLogin(subject);
+    public TokenDTO refreshToken(RefreshTokenDTO refreshTokenDTO) {
+        Long subject = Long.valueOf(tokenService.getSubject(refreshTokenDTO.getRefreshToken()));
 
-        return tokenService.gerarToken(usuario);
+        Usuario usuario = usuarioRepository.findById(subject)
+                .orElseThrow(() -> new UsuarioException("Não foi possível encontrar o usuário de Id: " + subject, HttpStatus.NOT_FOUND));
+
+        return gerarToken(usuario);
     }
 
-    public String authLogin(@Valid LoginRequest loginRequest) {
+    private TokenDTO gerarToken(Usuario usuario) {
+        String token = tokenService.gerarToken(usuario);
+        String refreshToken = tokenService.gerarRefreshToken(usuario);
+
+        return TokenDTO.builder()
+                .token(token)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    public TokenDTO authLogin(LoginRequest loginRequest) {
         UsernamePasswordAuthenticationToken usernamePassAuthToken = new UsernamePasswordAuthenticationToken(
                 loginRequest.getLogin(),
                 loginRequest.getSenha()
         );
 
         AuthenticationManager authenticationManager = applicationContext.getBean(AuthenticationManager.class);
-
         Authentication authentication = authenticationManager.authenticate(usernamePassAuthToken);
 
-        return tokenService.gerarToken((Usuario) authentication.getPrincipal());
+        return gerarToken((Usuario) authentication.getPrincipal());
     }
 }
 

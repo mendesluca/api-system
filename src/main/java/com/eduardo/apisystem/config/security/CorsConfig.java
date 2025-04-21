@@ -1,4 +1,4 @@
-package com.eduardo.apisystem.config;
+package com.eduardo.apisystem.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
