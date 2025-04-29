@@ -46,7 +46,7 @@ public class UsuarioService {
         usuario.getPerfilList().add(perfil);
 
         usuario = usuarioRepository.save(usuario);
-        emailService.enviarEmailVerificacao(usuario);
+//        emailService.enviarEmailVerificacao(usuario);
 
         return usuarioMapper.usuarioToUsuarioDTO(usuario);
     }

@@ -1,7 +1,6 @@
 package com.eduardo.apisystem.config.security;
 
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -65,8 +64,8 @@ public class SecurityConfig {
 
     @Bean
     public RoleHierarchy roleHierarchy() {
-        String hierarchy = "ROLE_ADMINISTRADOR > ROLE_DEV\n" +
-                "ROLE_DEV > ROLE_USUARIO";
+        String hierarchy = "ADMINISTRADOR > DEV\n" +
+                "DEV > USUARIO";
 
         return RoleHierarchyImpl.fromHierarchy(hierarchy);
     }

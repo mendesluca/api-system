@@ -30,7 +30,7 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) {
         try {
-            return usuarioRepository.findByLoginAndVerificadoTrue(login);
+            return usuarioRepository.findByLogin(login);
         } catch (UsernameNotFoundException e) {
             throw new UsernameNotFoundException(e.getMessage());
         }
@@ -40,13 +40,13 @@ public class AuthService implements UserDetailsService {
         token = token.replace("Bearer ", "");
         String subject = tokenService.getSubject(token);
 
-        return usuarioRepository.findByLoginAndVerificadoTrue(subject);
+        return usuarioRepository.findByLogin(subject);
     }
 
     public UsuarioResponseDTO findUsuarioByToken(String token) {
         token = token.replace("Bearer ", "");
         String subject = tokenService.getSubject(token);
-        Usuario usuario = usuarioRepository.findByLoginAndVerificadoTrue(subject);
+        Usuario usuario = usuarioRepository.findByLogin(subject);
 
         return usuarioMapper.usuarioToUsuarioResponseDTO(usuario);
     }

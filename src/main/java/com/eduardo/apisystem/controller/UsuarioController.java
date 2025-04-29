@@ -73,9 +73,9 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("token/{token}")
+    @GetMapping("token")
     @Operation(summary = "Busca um usuário pelo token")
-    public ResponseEntity<UsuarioResponseDTO> loadUserByToken(@PathVariable String token) {
+    public ResponseEntity<UsuarioResponseDTO> loadUserByToken(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(authService.findUsuarioByToken(token));
     }
 

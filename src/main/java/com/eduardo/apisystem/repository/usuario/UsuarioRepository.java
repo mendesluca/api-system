@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
   Usuario findByEmail(String email);
 
-  @Query("FROM Usuario WHERE login = ?1 AND emailVerificado = true")
-  Usuario findByLoginAndVerificadoTrue(String login);
+  @Query("FROM Usuario WHERE login = ?1")
+  Usuario findByLogin(String login);
 
   Optional<Usuario> findByEmailToken(String emailToken);
 }

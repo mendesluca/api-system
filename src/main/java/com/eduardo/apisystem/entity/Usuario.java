@@ -51,7 +51,7 @@ public class Usuario implements UserDetails {
     @Column(name = "ativo")
     private Boolean ativo;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH}, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "usuario_perfis",
             joinColumns = @JoinColumn(name = "usuario_id"),
@@ -99,6 +99,6 @@ public class Usuario implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.ativo;
+        return true;
     }
 }
