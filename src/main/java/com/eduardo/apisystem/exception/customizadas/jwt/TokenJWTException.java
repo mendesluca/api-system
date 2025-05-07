@@ -1,4 +1,4 @@
-package exception.customizadas.jwt;
+package com.eduardo.apisystem.exception.customizadas.jwt;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

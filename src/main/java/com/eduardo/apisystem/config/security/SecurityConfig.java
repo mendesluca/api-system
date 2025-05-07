@@ -37,14 +37,11 @@ public class SecurityConfig {
                             "/swagger-ui.html"
                     ).permitAll();
 
-                    requests.requestMatchers(HttpMethod.POST, "/api/system/usuario").permitAll();
-                    requests.requestMatchers(HttpMethod.GET, "/api/system/usuario/verificar-conta").permitAll();
+                    requests.requestMatchers(HttpMethod.POST, "/api/system/usuarios").permitAll();
+                    requests.requestMatchers(HttpMethod.GET, "/api/system/usuarios/verificar-conta").permitAll();
 
-
-                    requests.requestMatchers(HttpMethod.PATCH, "/api/system/usuario/{usuarioId}/perfil").hasRole("ADMINISTRADOR");
-                    requests.requestMatchers(HttpMethod.GET, "/api/system/usuario").hasRole("DEV");
-
-
+                    requests.requestMatchers(HttpMethod.PATCH, "/api/system/usuarios/{usuarioId}/perfil").hasRole("ADMINISTRADOR");
+                    requests.requestMatchers(HttpMethod.GET, "/api/system/usuarios").hasRole("DEV");
 
                     requests.anyRequest().authenticated();
                 })

@@ -7,7 +7,7 @@ import com.eduardo.apisystem.model.dto.jwt.TokenDTO;
 import com.eduardo.apisystem.model.dto.usuario.UsuarioResponseDTO;
 import com.eduardo.apisystem.model.request.LoginRequest;
 import com.eduardo.apisystem.repository.usuario.UsuarioRepository;
-import exception.customizadas.usuario.UsuarioException;
+import com.eduardo.apisystem.exception.customizadas.usuario.UsuarioException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;

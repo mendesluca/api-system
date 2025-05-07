@@ -3,7 +3,7 @@ package com.eduardo.apisystem.config.security;
 import com.eduardo.apisystem.entity.Usuario;
 import com.eduardo.apisystem.repository.usuario.UsuarioRepository;
 import com.eduardo.apisystem.service.auth.TokenService;
-import exception.customizadas.jwt.TokenJWTException;
+import com.eduardo.apisystem.exception.customizadas.jwt.TokenJWTException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

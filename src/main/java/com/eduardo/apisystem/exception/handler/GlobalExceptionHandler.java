@@ -1,8 +1,8 @@
-package exception.handler;
+package com.eduardo.apisystem.exception.handler;
 
-import exception.customizadas.usuario.SenhaException;
-import exception.customizadas.jwt.TokenJWTException;
-import exception.customizadas.usuario.UsuarioException;
+import com.eduardo.apisystem.exception.customizadas.usuario.SenhaException;
+import com.eduardo.apisystem.exception.customizadas.jwt.TokenJWTException;
+import com.eduardo.apisystem.exception.customizadas.usuario.UsuarioException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

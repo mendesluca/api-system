@@ -1,4 +1,4 @@
-package exception.customizadas.usuario;
+package com.eduardo.apisystem.exception.customizadas.usuario;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

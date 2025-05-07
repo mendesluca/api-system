@@ -1,4 +1,4 @@
-package exception.handler;
+package com.eduardo.apisystem.exception.handler;
 
 import lombok.*;
 import org.springframework.http.HttpStatus;
