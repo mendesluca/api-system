@@ -1,7 +1,7 @@
 package com.eduardo.apisystem.service.auth;
 
 import com.eduardo.apisystem.entity.usuario.Usuario;
-import com.eduardo.apisystem.mapper.UsuarioMapper;
+import com.eduardo.apisystem.mapper.usuario.UsuarioMapper;
 import com.eduardo.apisystem.model.dto.jwt.RefreshTokenDTO;
 import com.eduardo.apisystem.model.dto.jwt.TokenDTO;
 import com.eduardo.apisystem.model.dto.usuario.UsuarioResponseDTO;

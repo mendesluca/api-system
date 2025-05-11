@@ -2,7 +2,7 @@ package com.eduardo.apisystem.service.usuario;
 
 import com.eduardo.apisystem.entity.usuario.Perfil;
 import com.eduardo.apisystem.entity.usuario.Usuario;
-import com.eduardo.apisystem.mapper.UsuarioMapper;
+import com.eduardo.apisystem.mapper.usuario.UsuarioMapper;
 import com.eduardo.apisystem.model.dto.perfil.PerfilDTO;
 import com.eduardo.apisystem.model.dto.usuario.SenhaDTO;
 import com.eduardo.apisystem.model.dto.usuario.UsuarioDTO;

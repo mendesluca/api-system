@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,9 +16,8 @@ import java.util.Set;
 @Table(name = "receita")
 @Getter
 @Setter
-@RequiredArgsConstructor
-@Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class Receita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,4 +62,12 @@ public class Receita {
 
     @Column(name = "autor")
     private String autor;
+
+    @Column(name = "data_hora_criacao")
+    private LocalDateTime dataHoraCriacao;
+
+    @PrePersist
+    public void prePersist() {
+        setDataHoraCriacao(LocalDateTime.now());
+    }
 }

@@ -1,0 +1,81 @@
+package com.eduardo.apisystem.service.receita;
+
+
+import com.eduardo.apisystem.entity.receita.Receita;
+import com.eduardo.apisystem.entity.usuario.Usuario;
+import com.eduardo.apisystem.exception.customizadas.receita.ReceitaException;
+import com.eduardo.apisystem.mapper.receita.ReceitaMapper;
+import com.eduardo.apisystem.model.dto.receita.ReceitaDTO;
+import com.eduardo.apisystem.model.enums.receita.TipoCusto;
+import com.eduardo.apisystem.repository.receita.ReceitaRepository;
+import com.eduardo.apisystem.service.auth.AuthService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class ReceitaService {
+    private final ReceitaRepository receitaRepository;
+    private final ReceitaMapper receitaMapper;
+    private final AuthService authService;
+
+    public ReceitaDTO criar(ReceitaDTO dto, String token) {
+        Usuario usuario = authService.findUsuarioEntityByToken(token);
+        Receita receita = setarAtributos(dto, usuario);
+        return receitaMapper.toDto(receitaRepository.save(receita));
+    }
+
+    public ReceitaDTO buscarPorIdDto(Long receitaId) {
+        return receitaMapper.toDto(buscarPorIdEntity(receitaId));
+    }
+
+    private Receita buscarPorIdEntity(Long receitaId) {
+        return receitaRepository.findById(receitaId)
+                .orElseThrow(() -> new ReceitaException("Receita #" + receitaId + " não encnotrado"));
+    }
+
+    public List<ReceitaDTO> buscarTodos() {
+        return receitaMapper.toListDto(receitaRepository.findAll());
+    }
+
+    private Receita setarAtributos(ReceitaDTO dto, Usuario usuario) {
+        Receita receita = receitaMapper.toEntity(dto);
+
+        receita.setAutor(usuario.getEmail());
+        calcularTipoCusto(receita);
+
+        return receita;
+    }
+
+    private void calcularTipoCusto(Receita receita) {
+        if (receita.getCusto() == null) {
+            receita.setCusto(BigDecimal.ZERO);
+        }
+
+        double custo = receita.getCusto().doubleValue();
+
+        if (custo >= 0 && custo <= 20) {
+            receita.setTipoCusto(TipoCusto.ECONOMICO);
+            return;
+        }
+
+        if (custo >= 20 && custo <= 40) {
+            receita.setTipoCusto(TipoCusto.BARATO);
+            return;
+        }
+
+        if (custo >= 40 && custo <= 60) {
+            receita.setTipoCusto(TipoCusto.RAZOAVEL);
+            return;
+        }
+
+        if (custo >= 60) {
+            receita.setTipoCusto(TipoCusto.CARO);
+        }
+    }
+}

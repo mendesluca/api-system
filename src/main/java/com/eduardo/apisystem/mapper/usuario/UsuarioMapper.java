@@ -1,4 +1,4 @@
-package com.eduardo.apisystem.mapper;
+package com.eduardo.apisystem.mapper.usuario;
 
 import com.eduardo.apisystem.entity.usuario.Usuario;
 import com.eduardo.apisystem.model.dto.usuario.UsuarioDTO;
