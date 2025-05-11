@@ -1,6 +1,6 @@
-package com.eduardo.apisystem.entity;
+package com.eduardo.apisystem.entity.usuario;
 
-import com.eduardo.apisystem.model.enums.TipoPerfil;
+import com.eduardo.apisystem.model.enums.usurio.TipoPerfil;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

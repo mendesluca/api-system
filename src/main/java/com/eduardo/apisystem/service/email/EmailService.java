@@ -1,6 +1,6 @@
 package com.eduardo.apisystem.service.email;
 
-import com.eduardo.apisystem.entity.Usuario;
+import com.eduardo.apisystem.entity.usuario.Usuario;
 import com.eduardo.apisystem.exception.customizadas.usuario.UsuarioException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

@@ -1,4 +1,4 @@
-package com.eduardo.apisystem.entity;
+package com.eduardo.apisystem.entity.usuario;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

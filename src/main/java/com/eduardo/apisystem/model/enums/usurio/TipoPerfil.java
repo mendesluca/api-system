@@ -1,4 +1,4 @@
-package com.eduardo.apisystem.model.enums;
+package com.eduardo.apisystem.model.enums.usurio;
 
 import lombok.Getter;
 

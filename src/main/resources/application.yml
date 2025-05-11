@@ -34,8 +34,6 @@ swagger:
   username: ${SWAGGER_USERNAME:root}
   password: ${SWAGGER_PASSWORD:root}
 
-
-
 jwt:
   secret: ${JWT_SECRET:asdas5d1as51hgsdfjhdaja398498415asd1asfhs5dfssdf}
   expiration: ${JWT_EXPIRATION:900}
@@ -52,11 +50,3 @@ springdoc:
 
 server:
   port: 8150
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
-

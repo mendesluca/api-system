@@ -1,13 +1,13 @@
 package com.eduardo.apisystem.service.usuario;
 
-import com.eduardo.apisystem.entity.Perfil;
-import com.eduardo.apisystem.entity.Usuario;
+import com.eduardo.apisystem.entity.usuario.Perfil;
+import com.eduardo.apisystem.entity.usuario.Usuario;
 import com.eduardo.apisystem.mapper.UsuarioMapper;
 import com.eduardo.apisystem.model.dto.perfil.PerfilDTO;
 import com.eduardo.apisystem.model.dto.usuario.SenhaDTO;
 import com.eduardo.apisystem.model.dto.usuario.UsuarioDTO;
 import com.eduardo.apisystem.model.dto.usuario.UsuarioResponseDTO;
-import com.eduardo.apisystem.model.enums.TipoPerfil;
+import com.eduardo.apisystem.model.enums.usurio.TipoPerfil;
 import com.eduardo.apisystem.repository.perfil.PerfilRepository;
 import com.eduardo.apisystem.repository.usuario.UsuarioRepository;
 import com.eduardo.apisystem.service.auth.AuthService;
