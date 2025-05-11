@@ -27,6 +27,7 @@ public class ReceitaService {
     public ReceitaDTO criar(ReceitaDTO dto, String token) {
         Usuario usuario = authService.findUsuarioEntityByToken(token);
         Receita receita = setarAtributos(dto, usuario);
+
         return receitaMapper.toDto(receitaRepository.save(receita));
     }
 
@@ -45,7 +46,8 @@ public class ReceitaService {
 
     private Receita setarAtributos(ReceitaDTO dto, Usuario usuario) {
         Receita receita = receitaMapper.toEntity(dto);
-
+        receita.setReceitaId(null);
+        receita.getIngredienteSet().forEach(ingrediente -> ingrediente.setReceita(receita));
         receita.setAutor(usuario.getEmail());
         calcularTipoCusto(receita);
 
@@ -77,5 +79,34 @@ public class ReceitaService {
         if (custo >= 60) {
             receita.setTipoCusto(TipoCusto.CARO);
         }
+    }
+
+    public ReceitaDTO atualizar(Long receitaId, ReceitaDTO receitaDTO, String token) {
+        Usuario usuario = authService.findUsuarioEntityByToken(token);
+        Receita receitaExistente = buscarPorIdEntity(receitaId);
+
+        if (!receitaExistente.getAutor().equals(usuario.getEmail())) {
+            throw new ReceitaException("Usuário não autorizado a atualizar esta receita");
+        }
+
+        Receita receitaAtualizada = receitaMapper.toEntity(receitaDTO);
+        receitaAtualizada.setReceitaId(receitaExistente.getReceitaId());
+        receitaAtualizada.setAutor(receitaExistente.getAutor());
+        receitaAtualizada.setDataHoraCriacao(receitaExistente.getDataHoraCriacao());
+
+        receitaAtualizada.getIngredienteSet().forEach(ingrediente -> ingrediente.setReceita(receitaAtualizada));
+
+        return receitaMapper.toDto(receitaRepository.save(receitaAtualizada));
+    }
+
+    public void deletar(Long receitaId, String token) {
+        Usuario usuario = authService.findUsuarioEntityByToken(token);
+        Receita receita = buscarPorIdEntity(receitaId);
+
+        if (!receita.getAutor().equals(usuario.getEmail())) {
+            throw new ReceitaException("Usuário não autorizado a deletar esta receita");
+        }
+
+        receitaRepository.delete(receita);
     }
 }

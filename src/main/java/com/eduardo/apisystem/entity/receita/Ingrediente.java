@@ -22,4 +22,9 @@ public class Ingrediente {
 
     @Column(name = "tipo_ingrediente")
     private TipoIngrediente tipoIngrediente;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "receita")
+    private Receita receita;
+
 }

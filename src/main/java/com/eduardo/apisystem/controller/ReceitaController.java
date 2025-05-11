@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,12 +23,12 @@ public class ReceitaController {
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     @Operation(summary = "Cria uma receita")
-    public ResponseEntity<Void> criarUsuario(@RequestBody ReceitaDTO receitaDTO, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<ReceitaDTO> criarUsuario(@RequestBody ReceitaDTO receitaDTO, UriComponentsBuilder uriBuilder, @RequestHeader("Authorization") String token) {
         ReceitaDTO receitaSalva = receitaService.criar(receitaDTO, token);
 
         URI uri = uriBuilder.path("/api/system/receitas/{id}").buildAndExpand(receitaSalva.getReceitaId()).toUri();
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(receitaSalva);
     }
 
     @GetMapping("{receitaId}")
@@ -38,7 +39,21 @@ public class ReceitaController {
 
     @GetMapping("")
     @Operation(summary = "Busca todas as receitas")
-    public ResponseEntity<ReceitaDTO> handleBuscarTodos() {
-        return ResponseEntity.ok().body((ReceitaDTO) receitaService.buscarTodos());
+    public ResponseEntity<List<ReceitaDTO>> handleBuscarTodos() {
+        return ResponseEntity.ok().body(receitaService.buscarTodos());
+    }
+
+    @PutMapping("{receitaId}")
+    @Operation(summary = "Atualiza uma receita pelo id")
+    public ResponseEntity<ReceitaDTO> atualizarReceita(@PathVariable @NotNull Long receitaId, @RequestBody ReceitaDTO receitaDTO, @RequestHeader("Authorization") String token) {
+        ReceitaDTO receitaAtualizada = receitaService.atualizar(receitaId, receitaDTO, token);
+        return ResponseEntity.ok(receitaAtualizada);
+    }
+
+    @DeleteMapping("{receitaId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Deleta uma receita pelo id")
+    public void deletarReceita(@PathVariable @NotNull Long receitaId, @RequestHeader("Authorization") String token) {
+        receitaService.deletar(receitaId, token);
     }
 }

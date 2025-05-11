@@ -33,8 +33,7 @@ public class Receita {
     @Column(name = "imagem_url")
     private String imagemUrl;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "ingrediente_id")
+    @OneToMany(mappedBy = "receita", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Ingrediente> ingredienteSet = new LinkedHashSet<>();
 
     @ElementCollection
@@ -50,7 +49,6 @@ public class Receita {
     @Column(name = "pontos_ecologicos")
     private Integer pontosEcologicos;
 
-    // No post, sera determinado o tipo de custo atraves da variavel custo
     @Column(name = "tipo_custo")
     private TipoCusto tipoCusto;
 
