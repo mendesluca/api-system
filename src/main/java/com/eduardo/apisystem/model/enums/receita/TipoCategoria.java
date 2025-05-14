@@ -6,5 +6,6 @@ import lombok.Getter;
 public enum TipoCategoria {
     JARDINAGEM,
     BRINQUEDO,
-    UTILIDADE
+    UTILIDADE,
+    DECORACAO
 }

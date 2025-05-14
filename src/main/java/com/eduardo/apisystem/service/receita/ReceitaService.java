@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -47,7 +48,10 @@ public class ReceitaService {
     private Receita setarAtributos(ReceitaDTO dto, Usuario usuario) {
         Receita receita = receitaMapper.toEntity(dto);
         receita.setReceitaId(null);
-        receita.getIngredienteSet().forEach(ingrediente -> ingrediente.setReceita(receita));
+        receita.getIngredienteSet().forEach(ingrediente -> {
+            ingrediente.setIngredienteId(null);
+            ingrediente.setReceita(receita);
+        });
         receita.setAutor(usuario.getEmail());
         calcularTipoCusto(receita);
 
@@ -108,5 +112,11 @@ public class ReceitaService {
         }
 
         receitaRepository.delete(receita);
+    }
+
+    public List<ReceitaDTO> buscarTodosPorUsuario(String token) {
+        Usuario usuario = authService.findUsuarioEntityByToken(token);
+
+        return receitaMapper.toListDto(receitaRepository.buscarReceitaPorUsuario(usuario.getEmail()));
     }
 }

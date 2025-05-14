@@ -43,6 +43,12 @@ public class ReceitaController {
         return ResponseEntity.ok().body(receitaService.buscarTodos());
     }
 
+    @GetMapping("usuario")
+    @Operation(summary = "Busca todas as receitas de um usuario")
+    public ResponseEntity<List<ReceitaDTO>> handleBuscarPorUsuario(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok().body(receitaService.buscarTodosPorUsuario(token));
+    }
+
     @PutMapping("{receitaId}")
     @Operation(summary = "Atualiza uma receita pelo id")
     public ResponseEntity<ReceitaDTO> atualizarReceita(@PathVariable @NotNull Long receitaId, @RequestBody ReceitaDTO receitaDTO, @RequestHeader("Authorization") String token) {
