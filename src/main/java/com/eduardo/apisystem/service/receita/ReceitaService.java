@@ -53,36 +53,8 @@ public class ReceitaService {
             ingrediente.setReceita(receita);
         });
         receita.setAutor(usuario.getEmail());
-        calcularTipoCusto(receita);
 
         return receita;
-    }
-
-    private void calcularTipoCusto(Receita receita) {
-        if (receita.getCusto() == null) {
-            receita.setCusto(BigDecimal.ZERO);
-        }
-
-        double custo = receita.getCusto().doubleValue();
-
-        if (custo >= 0 && custo <= 20) {
-            receita.setTipoCusto(TipoCusto.ECONOMICO);
-            return;
-        }
-
-        if (custo >= 20 && custo <= 40) {
-            receita.setTipoCusto(TipoCusto.BARATO);
-            return;
-        }
-
-        if (custo >= 40 && custo <= 60) {
-            receita.setTipoCusto(TipoCusto.RAZOAVEL);
-            return;
-        }
-
-        if (custo >= 60) {
-            receita.setTipoCusto(TipoCusto.CARO);
-        }
     }
 
     public ReceitaDTO atualizar(Long receitaId, ReceitaDTO receitaDTO, String token) {
